@@ -10,9 +10,12 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 const commentsRouter = require('./routes/comments');
+const passport = require('passport')
 require('colors')
 
 const app = express();
+
+app.use(passport.initialize())
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

@@ -1,5 +1,5 @@
 const passport = require('Passport')
-const localStrategy = require('passport-local').Strategy
+const LocalStrategy = require('passport-local').Strategy
 const JWTStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
@@ -30,6 +30,48 @@ const AuthenticateJWTStrategy = async (JWTPayload, done) => {
     } catch (error) { return done(error) }
 }
 
-passport.use('login', new localStrategy(localStrategyOpts, loginLocalStrategy));
+passport.use('login', new LocalStrategy(localStrategyOpts, loginLocalStrategy));
 
 passport.use('authentication', new JWTStrategy(JWTStrategyOpts, AuthenticateJWTStrategy))
+
+
+
+
+
+
+
+
+
+
+
+
+// passport.use(
+//     new LocalStrategy({ usernameField: 'email', passwordField: 'password' }, async (email, password, done) => {
+//         //match user
+//         const user = await USER.findOne({ where: { email: email } })
+//         if (!user) return done(new Error('Invalid email or password'))
+
+//         bcrypt.compare(password, user.password, (err, isMatch) => {
+//             if (err) throw new APIError({ message: err })
+
+//             if (isMatch) {
+//                 //  return done(null, user);
+//                 return done(null, user.deleteFields(['password'], { message: 'Logged In Successfull' }))
+//             } else {
+//                 return done(new Error('Invalid email or password'))
+//             }
+//         })
+
+//         //  if (!await user.isValidPassword(password)) return done(new Error('Invalid email or password'))
+//         //  return done(null, user.deleteFields(['password'], { message: 'Logged In Successfull' }))
+//     }))
+
+// passport.serializeUser((user, done) => {
+//     done(null, user.id);
+// });
+
+// passport.deserializeUser((id, done) => {
+//     USER.findOne({ where: { id: id } }).then((err, user) => {
+//         done(err, user)
+//     })
+// })

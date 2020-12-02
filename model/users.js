@@ -115,25 +115,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE
         }
     }, {
-        hooks: {
-            beforeCreate: async function (next) {
-                const salt = await bcrypt.genSalt(10)
-                if (!this.isModified('password')) return next()
-                const hash = await bcrypt.hash(this.password, salt)
-                this.password = hash
-                next()
-            },
-            beforeCreate: async function (next, done) {
-                // try {
-                //     const own = this
-                //     const record = await userSchema.findOne({ where: { id: own.id, email: self.email, isDeleted: false } })
-
-                //     record ? done(new APIError({ status: 409, message: `"email" already exists` })) : done()
-                //     next()
-                // }
-                // catch (err) { done(err); next() }
-            }
-        },
         instanceMethods: {
             deleteFields: function (keys, defaultFields = true) {
                 return removeFields(this.toObject(), keys, defaultFields);
@@ -145,13 +126,10 @@ module.exports = (sequelize, DataTypes) => {
     })
 
 
-    usersSchema.beforeCreate(async (next) => {
+    usersSchema.beforeCreate(async (user) => {
         const salt = await bcrypt.genSalt(10)
-        if (!this.isModified('password')) return next()
-        const hash = await bcrypt.hash(this.password, salt)
-        this.password = hash
-        console.log(this._update.password)
-        next()
+        const hash = await bcrypt.hash(user.password, salt)
+        user.password = hash
     })
 
 

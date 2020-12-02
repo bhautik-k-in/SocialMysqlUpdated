@@ -19,25 +19,21 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         hooks: {
-            beforeCreate: async function (next, done) {
-                const own = this
-                if (!own.id) { done(); next() }
+            beforeCreate: async function (comment, done) {
+                if (!comment.id) { done(); }
 
-                const result = await POST.findOne({ where: { id: own.id, isDelete: false } })
+                const result = await POST.findOne({ where: { id: comment.id, isDelete: false } })
                 if (result) {
                     done(new APIError({ status: 422, message: 'Invaild post. Please provide a valid post' }))
                 } else { done() }
-                next()
             },
-            beforeUpdate: async function (next, done) {
-                const own = this
-                if (!own.id) { done(); next() }
+            beforeUpdate: async function (comment, done) {
+                if (!comment.id) { done(); next() }
 
-                const result = await POST.findOne({ where: { id: own.id, isDelete: false } })
+                const result = await POST.findOne({ where: { id: comment.id, isDelete: false } })
                 if (result) {
                     done(new APIError({ status: 422, message: 'Invaild post. Please provide a valid post' }))
                 } else { done() }
-                next()
             },
 
         }
